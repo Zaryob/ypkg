@@ -220,15 +220,15 @@ class YpkgSpec:
             ("conflicts", MultimapFormat(self, self.add_conflict, "main")),
             ("replaces", MultimapFormat(self, self.add_replace, "main")),
             ("optimize", OneOrMoreString),
-            ("environment", unicode),
+            ("environment", str),
         ])
         # Build steps are handled separately
         self.build_steps = OrderedDict([
-            ("setup", unicode),
-            ("build", unicode),
-            ("install", unicode),
-            ("check", unicode),
-            ("profile", unicode),
+            ("setup", str),
+            ("build", str),
+            ("install", str),
+            ("check", str),
+            ("profile", str),
         ])
         self.summaries = dict()
         self.descriptions = dict()
@@ -333,7 +333,7 @@ class YpkgSpec:
         # Grab the main root elements (k->v mapping)
         sets = [self.mandatory_tokens, self.optional_tokens, self.build_steps]
         for tk_set in sets:
-            for token in tk_set.keys():
+            for token in list(tk_set.keys()):
                 t = tk_set[token]
 
                 if token not in yaml_data and tk_set != self.mandatory_tokens:
@@ -368,7 +368,7 @@ class YpkgSpec:
 
         # Ensure this package would actually be able to build..
         steps = [self.step_setup, self.step_build, self.step_install]
-        steps = filter(lambda s: s, steps)
+        steps = [s for s in steps if s]
         if len(steps) == 0:
             console_ui.emit_error("YAML", "No functional build steps found")
             return False
@@ -453,9 +453,7 @@ class YpkgSpec:
         return self.summaries[name]
 
 
-class PackageHistory(xmlfile.XmlFile):
-
-    __metaclass__ = autoxml.autoxml
+class PackageHistory(xmlfile.XmlFile, metaclass=autoxml.autoxml):
 
     tag = "YPKG"
 

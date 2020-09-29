@@ -381,7 +381,7 @@ def store_debug(context, pretty, file, magic_string):
     # Account for race condition in directory creation
     dirs = os.path.dirname(did_full)
     try:
-        os.makedirs(dirs, mode=00755)
+        os.makedirs(dirs, mode=0o0755)
     except Exception as e:
         pass
     if not os.path.exists(dirs):

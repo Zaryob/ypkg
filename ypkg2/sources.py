@@ -99,7 +99,7 @@ class GitSource(YpkgSource):
         # Ensure source dir exists
         if not os.path.exists(source_dir):
             try:
-                os.makedirs(source_dir, mode=00755)
+                os.makedirs(source_dir, mode=0o0755)
             except Exception as e:
                 console_ui.emit_error("Source", "Cannot create sources "
                                       "directory: {}".format(e))
@@ -175,7 +175,7 @@ class GitSource(YpkgSource):
 
         if not os.path.exists(context.get_build_dir()):
             try:
-                os.makedirs(context.get_build_dir(), mode=00755)
+                os.makedirs(context.get_build_dir(), mode=0o0755)
             except Exception as e:
                 console_ui.emit_error("Source", "Cannot create sources "
                                       "directory: {}".format(e))
@@ -221,7 +221,7 @@ class TarSource(YpkgSource):
         # Ensure source dir exists
         if not os.path.exists(source_dir):
             try:
-                os.makedirs(source_dir, mode=00755)
+                os.makedirs(source_dir, mode=0o0755)
             except Exception as e:
                 console_ui.emit_error("Source", "Cannot create sources "
                                       "directory: {}".format(e))
@@ -307,7 +307,7 @@ class TarSource(YpkgSource):
 
         if not os.path.exists(context.get_build_dir()):
             try:
-                os.makedirs(context.get_build_dir(), mode=00755)
+                os.makedirs(context.get_build_dir(), mode=0o0755)
             except Exception as e:
                 console_ui.emit_error("Source", "Failed to construct build "
                                       "directory")
@@ -353,13 +353,13 @@ class SourceManager:
                 print("Erronous line: {}".format(str(source)))
                 return False
 
-            if len(source.keys()) != 1:
+            if len(list(source.keys())) != 1:
                 console_ui.emit_error("SOURCE",
                                       "Encountered too many keys in source")
-                print("Erronous source: {}".format(str(source)))
+                print(("Erronous source: {}".format(str(source))))
                 return False
 
-            uri = source.keys()[0]
+            uri = list(source.keys())[0]
             hash = source[uri]
             # Check if its a namespaced support type
             if "|" in uri:

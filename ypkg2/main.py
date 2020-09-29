@@ -340,7 +340,7 @@ def build_package(filename, outputDir):
                 if spec.step_profile:
                     try:
                         if not os.path.exists(context.get_pgo_dir()):
-                            os.makedirs(context.get_pgo_dir(), 00755)
+                            os.makedirs(context.get_pgo_dir(), 0o0755)
                     except Exception as e:
                         console_ui.emit_error("Source", "Error creating dir")
                         print(e)
@@ -349,7 +349,7 @@ def build_package(filename, outputDir):
             work_dir = manager.get_working_dir(context)
             if not os.path.exists(work_dir):
                 try:
-                    os.makedirs(work_dir, mode=00755)
+                    os.makedirs(work_dir, mode=0o0755)
                 except Exception as e:
                     console_ui.emit_error("Source", "Error creating directory")
                     print(e)
@@ -401,7 +401,7 @@ def build_package(filename, outputDir):
 
     if not os.path.exists(ctx.get_packaging_dir()):
         try:
-            os.makedirs(ctx.get_packaging_dir(), mode=00755)
+            os.makedirs(ctx.get_packaging_dir(), mode=0o0755)
         except Exception as e:
             console_ui.emit_error("Package", "Failed to create pkg dir")
             print(e)
@@ -413,7 +413,7 @@ def build_package(filename, outputDir):
     if spec.get_component("main") == "kernel.image":
         exa.can_kernel = False
 
-    exaResults = exa.examine_packages(ctx, gene.packages.values())
+    exaResults = exa.examine_packages(ctx, list(gene.packages.values()))
     if exaResults is None:
         console_ui.emit_error("Package", "Failed to correctly examine all "
                               "packages.")
@@ -443,8 +443,8 @@ def build_package(filename, outputDir):
     if len(gene.packages) == 0:
         console_ui.emit_error("Package", "No resulting packages found")
         w = "https://solus-project.com/articles/packaging/"
-        print("Ensure your files end up in $installdir. Did you mean to "
-              "use %make_install?\n\nPlease see the help center: {}".format(w))
+        print(("Ensure your files end up in $installdir. Did you mean to "
+              "use %make_install?\n\nPlease see the help center: {}".format(w)))
         sys.exit(1)
 
     gene.emit_packages()

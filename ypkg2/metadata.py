@@ -124,10 +124,10 @@ def create_files_xml(context, package):
         fpath, hash = pisi.util.calculate_hash(full_path)
 
         if os.path.islink(fpath):
-            fsize = long(len(readlink(full_path)))
+            fsize = int(len(readlink(full_path)))
             st = os.lstat(fpath)
         else:
-            fsize = long(os.path.getsize(full_path))
+            fsize = int(os.path.getsize(full_path))
             st = os.stat(fpath)
 
         permanent = package.is_permanent("/" + path)
@@ -159,7 +159,7 @@ def create_files_xml(context, package):
 def create_packager(name, email):
     """ Factory: Create a packager """
     packager = pisi.specfile.Packager()
-    packager.name = unicode(name)
+    packager.name = str(name)
     packager.email = str(email)
     return packager
 
